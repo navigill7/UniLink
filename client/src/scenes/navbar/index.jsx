@@ -1,6 +1,6 @@
 const Navbar = ()=>{
     return ( 
-        <div>loginpage</div>
+        <div>Navbar</div>
     )
 }
 
