@@ -22,7 +22,7 @@ Menu,
 Close
 } from "@mui/icons-material";
 import { useDispatch  , useSelector} from "react-redux"; 
-import { setMode , setLogout } from "state";
+import { setMode , setLogout } from "state/index.js";
 import { Navigate, useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
@@ -38,7 +38,9 @@ const Navbar = ()=>{
     const background = theme.palette.background.default;
     const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
-    const fullName = `${user.firstName} ${user.lastName}`;
+    const fullName = user ? `${user.firstName} ${user.lastName}` : '';
+
+    //const fullName = `${user.firstName} ${user.lastName}`;
     return ( 
         <FlexBetween padding="1rem 6%" backgroundColor={alt}  >
             <FlexBetween gap="1.75rem" >
@@ -115,7 +117,7 @@ const Navbar = ()=>{
             )}
 
             {/* Mobile Nav */}
-            {!isNonMobileScreens && isMobileMenuToggled (
+            {!isNonMobileScreens && isMobileMenuToggled &&(
                 <Box
                   position="fixed"
                   right="0"
