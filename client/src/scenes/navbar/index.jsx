@@ -22,8 +22,8 @@ Menu,
 Close
 } from "@mui/icons-material";
 import { useDispatch  , useSelector} from "react-redux"; 
-import { setMode , setLogout } from "state/index.js";
-import { Navigate, useNavigate } from "react-router-dom";
+import { setMode , setLogout } from "state" ;
+import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
 const Navbar = ()=>{
