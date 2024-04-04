@@ -70,12 +70,24 @@ const Form = () => {
         body: formData,
       }
     );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
-
-    if (savedUser) {
-      setPageType("login");
+    if (savedUserResponse.ok) {
+      const savedUser = await savedUserResponse.json();
+      onSubmitProps.resetForm();
+      if (savedUser) {
+        setPageType("login");
+      }
+    } else {
+      // Handle error here
+      console.error("Failed to register:", savedUserResponse.statusText);
+      // Optionally display an error message to the user
     }
+
+    // const savedUser = await savedUserResponse.json();
+    // onSubmitProps.resetForm();
+
+    // if (savedUser) {
+    //   setPageType("login");
+    // }
   };
 
   const login = async (values, onSubmitProps) => {
@@ -84,17 +96,35 @@ const Form = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/home");
+
+    if (loggedInResponse.ok) {
+      const loggedIn = await loggedInResponse.json();
+      onSubmitProps.resetForm();
+      if (loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        navigate("/home");
+      }
+    } else {
+      // Handle error here
+      console.error("Failed to login:", loggedInResponse.statusText);
+      // Optionally display an error message to the user
     }
+    // const loggedIn = await loggedInResponse.json();
+    // onSubmitProps.resetForm();
+    // if (loggedIn) {
+    //   dispatch(
+    //     setLogin({
+    //       user: loggedIn.user,
+    //       token: loggedIn.token,
+    //     })
+    //   );
+    //   navigate("/home");
+    // }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
