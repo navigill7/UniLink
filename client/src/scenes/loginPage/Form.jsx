@@ -37,7 +37,7 @@ const initialValuesRegister = {
   email: "",
   password: "",
   location: "",
-  occupation: "",
+  Year: "",
   picture: "",
 };
 
