@@ -9,7 +9,7 @@ const PostsWidget = ({ userId , isProfile = false }) =>{
     const posts = useSelector((state)=> state.posts);
     const token = useSelector((state)=> state.token);
     const getPosts = async ()=>{
-        const response = await fetch(`http://localhoost:3001/posts`, {
+        const response = await fetch(`http://localhost:3001/posts`, {
             method : "GET",
             headers: {Authorization: `Bearer ${token}` }
         });
@@ -18,7 +18,7 @@ const PostsWidget = ({ userId , isProfile = false }) =>{
     }
 
     const getUserPosts = async ()=>{
-        const response = await fetch(`http://localhoost:3001/posts/${userId}/posts`, {
+        const response = await fetch(`http://localhost:3001/posts/${userId}/posts`, {
             method : "GET",
             headers: {Authorization: `Bearer ${token}` }
         });
@@ -53,7 +53,7 @@ const PostsWidget = ({ userId , isProfile = false }) =>{
                 key={_id}
                 postId={_id}
                 postUserId={userId}
-                name={`${firstName} ${lastName}}`}
+                name={`${firstName} ${lastName}`}
                 description={description}
                 location={location}
                 picturePath={picturePath}
