@@ -4,7 +4,7 @@ const initialState = {
     mode : "light",
     user: null,
     token: null,
-    posts: []
+    posts: [],
 };
 
 export  const authSlice = createSlice({
@@ -29,6 +29,7 @@ export  const authSlice = createSlice({
                 console.error("User friends non-existent")
             }
         },
+        
         setPosts: (state , action)=>{
             state.posts = action.payload.posts;
         },

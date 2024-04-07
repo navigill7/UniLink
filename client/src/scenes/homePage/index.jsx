@@ -5,6 +5,7 @@ import UserWidget from "scenes/widgets/UserWidget";
 import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import Friend from "components/Friends";
+import EventsWidget from "scenes/widgets/Events";
 
  
 const HomePage = ()=>{
@@ -34,7 +35,7 @@ const HomePage = ()=>{
 
                 {isNonMobileScreens && 
                     <Box flexBasis="26%" >
-                    
+                       <EventsWidget />
                     </Box>
                 }
 
