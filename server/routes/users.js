@@ -3,6 +3,7 @@ import {
     getUser,
     getUserFriends ,
     addRemoveFriends ,
+    SearchUser
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/auth.js";
 
@@ -17,4 +18,8 @@ router.get("/:id/friends" , verifyToken , getUserFriends);
 
 router.patch("/:id/:friendId" , verifyToken , addRemoveFriends);
 
+router.post('/search', (req, res) => {
+    console.log('Received POST request to /users/search');
+    SearchUser(req , res);
+});
 export default router;

@@ -67,6 +67,44 @@ export const getUserFriends = async (req , res)=>{
 //     }
 // }
 
+// Search endpoint 
+
+export const SearchUser = async (req, res) => {
+    try {
+        console.log('Search request received:', req.body);
+        
+        // Ensure that the query parameter is provided and is a non-empty string
+        const { query } = req.body;
+        if (!query || typeof query !== 'string' || query.trim() === '') {
+            return res.status(400).json({ message: "Invalid or missing search query" });
+        }
+
+        // Use a regex to perform case-insensitive search for first name or last name
+        const users = await User.find({
+            $or: [
+                { firstName: { $regex: query, $options: "i" } },
+                { lastName: { $regex: query, $options: "i" } },
+            ],
+        });
+
+        // Format the response to include necessary fields
+        const formattedUsers = users.map(({ _id, firstName, lastName, Year, location, picturePath }) => {
+            return { _id, firstName, lastName, Year, location, picturePath };
+        });
+
+        res.status(200).json(formattedUsers);
+    } catch (err) {
+        console.error('Error in searchUsers:', err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+
+
+  
+
+
 
 export const addRemoveFriends = async (req, res) => {
     try {
