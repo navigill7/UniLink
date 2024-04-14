@@ -26,7 +26,9 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getUser();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
+  
+//  console.log("user.picturePath:", user.picturePath);
 
   if (!user) return null;
 
