@@ -25,6 +25,10 @@ import { useDispatch  , useSelector} from "react-redux";
 import { setMode , setLogout } from "state" ;
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import "./index.css"
+
+
 
 const Navbar = ()=>{
     const [isMobileMenuToggled , setIsMobileMenuToggled] = useState(false);
@@ -39,6 +43,10 @@ const Navbar = ()=>{
     const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
     const fullName = user ? `${user.firstName} ${user.lastName}` : '';
+
+    const navigateToAlumni = () => {
+        navigate("./alumniPage");
+    }
 
     //const fullName = `${user.firstName} ${user.lastName}`;
     return ( 
@@ -80,7 +88,7 @@ const Navbar = ()=>{
                 </IconButton>
                 <Message sx={{ fontSize: "25px"}} />
                 <Notifications sx={{fontSize: "25px"}} /> 
-                <Help sx={{fontSize: "25px"}} />
+                <SupervisorAccountIcon className = "supervisor-icon" onClick = {navigateToAlumni} sx={{fontSize: "25px"}} />
                 <FormControl variant="standard" value={fullName} >
                     <Select
                         value={fullName}
