@@ -8,31 +8,22 @@ const PostsWidget = ({ userId , isProfile = false }) =>{
     const dispatch = useDispatch();
     const posts = useSelector((state)=> state.posts);
     const token = useSelector((state)=> state.token);
-
     const getPosts = async ()=>{
-        try {
-            const response = await fetch(`http://localhost:3001/posts`, {
-                method : "GET",
-                headers: {Authorization: `Bearer ${token}` }
-            });
-            const data = await response.json();
-            dispatch(setPosts({posts: data}));
-        } catch (error) {
-            console.error("Error fetching posts:", error);
-        }
+        const response = await fetch(`http://localhost:3001/posts`, {
+            method : "GET",
+            headers: {Authorization: `Bearer ${token}` }
+        });
+        const data = await response.json();
+        dispatch(setPosts({posts: data}));
     }
 
     const getUserPosts = async ()=>{
-        try {
-            const response = await fetch(`http://localhost:3001/posts/${userId}/posts`, {
-                method : "GET",
-                headers: {Authorization: `Bearer ${token}` }
-            });
-            const data = await response.json();
-            dispatch(setPosts({posts: data}));
-        } catch (error) {
-            console.error("Error fetching user posts:", error);
-        }
+        const response = await fetch(`http://localhost:3001/posts/${userId}/posts`, {
+            method : "GET",
+            headers: {Authorization: `Bearer ${token}` }
+        });
+        const data = await response.json();
+        dispatch(setPosts({posts: data}));
     }
 
     useEffect(()=>{
@@ -42,10 +33,6 @@ const PostsWidget = ({ userId , isProfile = false }) =>{
             getPosts();
         }
     }, []);
-
-    if (!Array.isArray(posts)) {
-        return <div>Loading...</div>; // or some other loading indicator
-    }
 
     return (
         <>
