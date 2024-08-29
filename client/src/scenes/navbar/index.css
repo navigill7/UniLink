@@ -1,10 +1,10 @@
-.supervisor-icon{
-    cursor : pointer;
-    color : white;
+.supervisor-icon {
+    cursor: pointer;
+    color: white;
     background-color: black;
     border-radius: 50%;
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     font-size: 24px;
-    
+
 }

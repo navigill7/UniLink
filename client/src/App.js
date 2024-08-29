@@ -1,6 +1,7 @@
 import { BrowserRouter ,Navigate , Routes , Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
+import AlumniPage from "scenes/alumniPage";
 import Navbar from "scenes/navbar";
 import ProfilePage from "scenes/profilePage";
 import { useMemo } from "react";
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<LoginPage/>} />
             <Route path="/home" element={ isAuth ? <HomePage/> : <Navigate to="/" />}/>
             <Route path="/profile/:userId" element={ isAuth ? <ProfilePage/> : <Navigate to="/"/>}/>
+            <Route path="//home/alumniPage" element={isAuth ? <AlumniPage/> : <Navigate to="/"/>}/>
           </Routes>
        </ThemeProvider>      
       </BrowserRouter>
