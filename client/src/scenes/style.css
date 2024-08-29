@@ -1,0 +1,22 @@
+.url-button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    /* background-color: cyan; */
+    border-radius: 50%;
+    color: gray;
+}
+
+.url-input {
+    margin-top: 3px;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 36px;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: rgb(202, 196, 196);
+    box-shadow: 0px 0px 2px 0px;
+
+    outline: none;
+    padding: 10px;
+}
