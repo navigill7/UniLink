@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import React from 'react';
 import Friend from "components/Friends";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "state";
 
@@ -11,8 +11,10 @@ const ConnectionListWidget = ({ userId }) => {
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
+  const [loading, setLoading] = useState(true);
 
   const getFriends = async () => {
+    setLoading(true);
     const response = await fetch(
       `http://localhost:3001/users/${userId}/friends`,
       {
@@ -22,11 +24,16 @@ const ConnectionListWidget = ({ userId }) => {
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
+    setLoading(false);
   };
 
   useEffect(() => {
     getFriends();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
     <WidgetWrapper>
@@ -39,7 +46,7 @@ const ConnectionListWidget = ({ userId }) => {
         Connections
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend) => (
+        {Array.isArray(friends) && friends.map((friend) => (
           <Friend
             key={friend._id}
             friendId={friend._id}
