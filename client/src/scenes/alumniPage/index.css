@@ -1,0 +1,8 @@
+.alumni-profiles{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 80vw;
+    padding-left : 5vw;
+    padding-right: 5vw;
+}

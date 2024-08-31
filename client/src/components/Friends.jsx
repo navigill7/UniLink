@@ -1,4 +1,5 @@
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
+import React from 'react';
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "state";

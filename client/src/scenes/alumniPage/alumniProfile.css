@@ -1,0 +1,157 @@
+/* Base styling for the image */
+.image {
+    width: 60%;
+    /* Adjust width to fit within the container */
+    height: auto;
+    border-radius: 14px;
+    margin-right: 20px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    /* Added opacity transition */
+}
+
+/* Container for the profile image and details */
+.profile-image-container {
+    display: flex;
+    flex-direction: row;
+    height: 425px;
+    background-color: lightgrey;
+    width: 650px;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    /* Added background-color transition */
+    position: relative;
+    /* For positioning pseudo-element */
+}
+
+/* Container for the profile details and button */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 35%;
+    /* Adjusted width to better fit content */
+}
+
+/* Flexbox for profile details */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Button styling with hover effect */
+button {
+    height: 36px;
+    width: 120px;
+    border: 0;
+    border-radius: 5px;
+    background-color: #007dfa;
+    color: white;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    /* Added box-shadow transition */
+}
+
+button:hover {
+    color: #007dfa;
+    background-color: white;
+    transform: scale(1.1);
+    /* Slightly enlarges button on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Adds shadow on hover */
+}
+
+/* Typography styling */
+h1,
+p {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 4px;
+    transition: color 0.3s ease-in-out;
+    /* Added color transition */
+}
+
+h1 {
+    font-size: 20px;
+    padding-left: 20px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+p {
+    font-size: 16px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* Add responsiveness */
+@media (max-width: 768px) {
+    .profile-image-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        width: 100%;
+    }
+
+    .image {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+
+    .profile-container {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Animation for image on hover */
+.image:hover {
+    transform: scale(1.05);
+    /* Slightly enlarges image on hover */
+    opacity: 0.9;
+    /* Slight fade effect on hover */
+}
+
+/* Container hover effect */
+.profile-image-container:hover {
+    transform: translateY(-10px) scale(1.02);
+    /* Slightly moves up and scales up on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* Adds more pronounced shadow on hover */
+    background-color: #f0f0f0;
+    border-color:#007dfa;
+    /* Lightens background color on hover */
+}
+
+/* Pseudo-element for a subtle effect */
+.profile-image-container::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    /* Adds subtle white overlay */
+    transition: opacity 0.3s ease-in-out;
+    /* Added transition for opacity */
+    opacity: 0;
+    /* Initially hidden */
+    z-index: 0;
+    /* Positioned behind content */
+}
+
+.profile-image-container:hover::before {
+    opacity: 1;
+    /* Shows overlay on hover */
+}
+
+.profile-container {
+    position: relative;
+    z-index: 1;
+    /* Ensures content is above the overlay */
+}
