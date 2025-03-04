@@ -17,10 +17,24 @@ jobs:
              ls -ltra
              cat package-lock.json
         working-directory: client
+      - name : installing cowsay 
+        run: sudo apt-get install cowsay -y 
+      - name: Generate the ASCII ArtWork
+        run: cowsay -f dragon "BLAA.....Blaa " >> dragon.txt
 
+      - name: testing if the file exists
+        run: grep -i "dragon" dragon.txt
+
+      - name: read the dragon file
+        run: cat dragon.txt
+      
+      - name: List repo
+        run: ls -ltra
       # - name: List Files
       #   run: ls
 
       # - name: Reading Files from the Project
       #   run: ls
       #   working-directory: client 
+
+      
