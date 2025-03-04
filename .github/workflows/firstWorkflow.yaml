@@ -9,5 +9,7 @@ jobs:
           run: echo "welcome to ubuntu "
         - name: list files 
           run: ls
-        - name: Read Files
+        - name: cloning the project
+          run: git checkout https://github.com/navigill7/UniLink 
+        - name: Reading Files from the project 
           run: cd client
