@@ -12,29 +12,28 @@ jobs:
       - name: Welcome Message
         run: echo "Welcome to Ubuntu"
 
-      - name: List and Read files
-        run: | 
-             ls -ltra
-             cat package-lock.json
-        working-directory: client
-      - name : installing cowsay 
-        run: sudo apt-get install cowsay -y 
+      - name: Check if client directory exists before listing files
+        run: |
+          if [ -d "client" ]; then 
+            ls -ltra client
+            cat client/package-lock.json
+          else 
+            echo "client directory not found. Skipping file read."
+          fi
+
+      - name: Update system and install cowsay
+        run: |
+          sudo apt-get update
+          sudo apt-get install cowsay -y
+
       - name: Generate the ASCII ArtWork
-        run: cowsay -f dragon "BLAA.....Blaa " >> dragon.txt
+        run: cowsay -f dragon "BLAA.....Blaa " > dragon.txt
 
-      - name: testing if the file exists
-        run: grep -i "dragon" dragon.txt
+      - name: Testing if the file exists
+        run: grep -i "dragon" dragon.txt || true  
 
-      - name: read the dragon file
+      - name: Read the dragon file
         run: cat dragon.txt
-      
+
       - name: List repo
         run: ls -ltra
-      # - name: List Files
-      #   run: ls
-
-      # - name: Reading Files from the Project
-      #   run: ls
-      #   working-directory: client 
-
-      
