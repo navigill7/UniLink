@@ -12,9 +12,16 @@ jobs:
       - name: Welcome Message
         run: echo "Welcome to Ubuntu"
 
-      - name: List Files
-        run: ls
+      - name: List and Read files
+        run: | 
+             ls -ltra
+             cat package-lock.json
+        working-directory: client
 
-      - name: Reading Files from the Project
-        run: ls
-        working-directory: client 
+      # - name: List Files
+      #   run: ls
+
+      # - name: Reading Files from the Project
+      #   run: ls
+      #   working-directory: client 
+up
