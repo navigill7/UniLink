@@ -1,0 +1,13 @@
+name : Demo WorkFlow
+
+on : push
+jobs:
+    first_job:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Welcome message
+          runs: echo "welcome to ubuntu "
+        - name: list files 
+          runs: ls
+        - name: Read Files
+          runs: cd client
