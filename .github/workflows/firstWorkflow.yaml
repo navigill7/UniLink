@@ -6,8 +6,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - name: Welcome message
-          runs: echo "welcome to ubuntu "
+          run: echo "welcome to ubuntu "
         - name: list files 
-          runs: ls
+          run: ls
         - name: Read Files
-          runs: cd client
+          run: cd client
