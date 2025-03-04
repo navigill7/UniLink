@@ -1,15 +1,20 @@
-name : Demo WorkFlow
+name: Demo WorkFlow
 
-on : push
+on: push
+
 jobs:
-    first_job:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Welcome message
-          run: echo "welcome to ubuntu "
-        - name: list files 
-          run: ls
-        - name: cloning the project
-          run: git checkout https://github.com/navigill7/UniLink 
-        - name: Reading Files from the project 
-          run: cd client
+  first_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Welcome Message
+        run: echo "Welcome to Ubuntu"
+
+      - name: List Files
+        run: ls
+
+      - name: Reading Files from the Project
+        run: ls
+        working-directory: client 
