@@ -7,7 +7,9 @@ env:
     DOCKERHUB_USERNAME: gillnavi
     CLIENT_IMAGE_NAME: client_image
     SERVER_IMAGE_NAME: server_image
-
+concurrency: 
+  group: unilink
+  cancel-in-progress: true
 jobs: 
     Build_React:
         runs-on: ubuntu-latest
