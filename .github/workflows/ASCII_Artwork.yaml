@@ -9,7 +9,7 @@ jobs:
         - name: Install cowsay program 
           run: sudo apt-get install cowsay -y 
         - name: Execute cowsay CMD
-          run: cowsay -f "BLAA BLAA ------">>dragon.txt
+          run: cowsay  "BLAA BLAA ------">>dragon.txt
         - name: sleep 
           run: sleep 30
     test_ascii:
