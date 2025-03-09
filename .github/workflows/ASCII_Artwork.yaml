@@ -9,21 +9,34 @@ jobs:
         - name: Install cowsay program 
           run: sudo apt-get install cowsay -y 
         - name: Execute cowsay CMD
-          run: cowsay  "BLAA BLAA ------">>dragon.txt
-        - name: sleep 
-          run: sleep 30
+          run: cowsay  "BLAA BLAA ------">dragon.txt
+        - name: Upload the dragon file artifact 
+          uses: actions/upload-artifact@v4
+          with:
+            name: cowsay-artifact
+            path: dragon.txt
     test_ascii:
         needs: build_ascii
         runs-on: ubuntu-latest
         steps:
-        - name: sleep
-          run: sleep 30
+        - name: Download the dragon file 
+          uses: actions/download-artifact@v4
+          with:
+            name: cowsay-artifact
+        - name: Display structure of downloaded files
+          run: ls -R
         - name: Test the Dragon file 
           run: grep -i "BLAA" dragon.txt
     deploy_ascii:
         needs: test_ascii
         runs-on: ubuntu-latest
         steps:
+        - name: Download the dragon file 
+          uses: actions/download-artifact@v4
+          with: 
+            name: cowsay-artifact
+        - name: Display the structure of download files 
+          run: ls -R
         - name: open the file dragon 
           run: cat dragon.txt
         - name: deploying
