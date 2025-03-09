@@ -1,5 +1,5 @@
 name: ASCII
-on: push
+on: workflow_dispatch
 
 jobs: 
     # all the jobs will run parallel on different machines and will not wait for anbody ...this is the default behavior of github action 
