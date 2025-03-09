@@ -8,7 +8,7 @@ env:
     CLIENT_IMAGE_NAME: client_image
     SERVER_IMAGE_NAME: server_image
 concurrency: 
-  group: unilink
+  group: unilink-&{{github.ref}}
   cancel-in-progress: true
 jobs: 
     Build_React:
