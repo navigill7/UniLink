@@ -13,6 +13,7 @@ jobs:
         - name: sleep 
           run: sleep 30
     test_ascii:
+        needs: build_ascii
         runs-on: ubuntu-latest
         steps:
         - name: sleep
@@ -20,6 +21,7 @@ jobs:
         - name: Test the Dragon file 
           run: grep -i "BLAA" dragon.txt
     deploy_ascii:
+        needs: test_ascii
         runs-on: ubuntu-latest
         steps:
         - name: open the file dragon 
