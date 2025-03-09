@@ -1,0 +1,32 @@
+name: Client_React
+on: push
+
+env:
+    CONTAINER_REGISTRY: docker.io
+    DOCKERHUB_USERNAME: gillnavi
+    IMAGE_NAME: client_image
+
+jobs: 
+    Build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Welcome
+          run: echo "Welcome to ubuntu"
+
+        - name: Checkout the repo
+          uses: actions/checkout@v4
+
+        - name: List all files
+          run: ls -ltr
+
+        - name: Move to client repo
+          run: cd client
+
+        - name: Log in to Docker Hub
+          run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ env.DOCKERHUB_USERNAME }}" --password-stdin
+
+        - name: Build the Docker image
+          run: docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest ./client
+
+        - name: Push the Docker image to Docker Hub
+          run: docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
