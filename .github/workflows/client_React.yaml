@@ -16,6 +16,11 @@ jobs:
           matrix:
             directory: [client, server]
             image_name: [client_image, server_image]
+            exclude:
+              - image_name: client_image
+                directory: server
+              - image_name: server_image
+                directory: client
         runs-on: ubuntu-latest
         timeout-minutes: 5
 
