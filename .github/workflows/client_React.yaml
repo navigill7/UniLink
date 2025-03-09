@@ -1,63 +1,39 @@
-name: Client_React
+name: Docker_Build_And_Push
 
 on: push
 
 env:
     CONTAINER_REGISTRY: docker.io
     DOCKERHUB_USERNAME: gillnavi
-    CLIENT_IMAGE_NAME: client_image
-    SERVER_IMAGE_NAME: server_image
+
 concurrency: 
-  group: unilink-&{{github.ref}}
+  group: unilink-${{ github.ref }}
   cancel-in-progress: true
+
 jobs: 
-    Build_React:
+    Build_Push:
+        strategy:
+          matrix:
+            directory: [client, server]
+            image_name: [client_image, server_image]
         runs-on: ubuntu-latest
-        timeout-minutes: 2
+        timeout-minutes: 5
+
         steps:
         - name: Welcome
-          run: echo "Welcome to Ubuntu Runner"
+          run: echo "Starting build for ${{ matrix.directory }}"
 
-        - name: Checkout the repo
+        - name: Checkout the Repository
           uses: actions/checkout@v4
 
         - name: List all files
           run: ls -ltr
 
-        - name: Move to client repo
-          run: cd client
-
         - name: Log in to Docker Hub
           run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ env.DOCKERHUB_USERNAME }}" --password-stdin
 
-        - name: Build the Client Docker image
-          run: docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ env.CLIENT_IMAGE_NAME }}:latest ./client
+        - name: Build the Docker Image
+          run: docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ matrix.image_name }}:latest ./${{ matrix.directory }}
 
-        - name: Push the Client Docker image to Docker Hub
-          run: docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ env.CLIENT_IMAGE_NAME }}:latest
-
-    Build_Node:
-        needs: Build_React
-        runs-on: ubuntu-latest
-        timeout-minutes: 2
-        steps:
-        - name: Welcome
-          run: echo "Welcome to Ubuntu Runner"
-
-        - name: Checkout the repo 
-          uses: actions/checkout@v4
-
-        - name: List all files 
-          run: ls -ltr
-
-        - name: Move to server repo 
-          run: cd server
-
-        - name: Log in to Docker Hub
-          run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ env.DOCKERHUB_USERNAME }}" --password-stdin
-
-        - name: Build the Server Docker image
-          run: docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ env.SERVER_IMAGE_NAME }}:latest ./server
-
-        - name: Push the Server Docker image to Docker Hub
-          run: docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ env.SERVER_IMAGE_NAME }}:latest
+        - name: Push the Docker Image to Docker Hub
+          run: docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ matrix.image_name }}:latest
