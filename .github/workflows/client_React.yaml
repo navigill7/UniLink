@@ -13,6 +13,7 @@ concurrency:
 jobs: 
     Build_React:
         runs-on: ubuntu-latest
+        timeout-minutes: 2
         steps:
         - name: Welcome
           run: echo "Welcome to Ubuntu Runner"
@@ -38,6 +39,7 @@ jobs:
     Build_Node:
         needs: Build_React
         runs-on: ubuntu-latest
+        timeout-minutes: 2
         steps:
         - name: Welcome
           run: echo "Welcome to Ubuntu Runner"
