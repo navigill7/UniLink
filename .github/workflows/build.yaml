@@ -13,6 +13,8 @@ concurrency:
 jobs: 
     Build_Push:
         strategy:
+          fail-fast: false
+          max-parallel: 2
           matrix:
             directory: [client, server]
             image_name: [client_image, server_image]
