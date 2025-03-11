@@ -30,22 +30,40 @@ jobs:
         - name: Welcome
           run: echo "Starting build for ${{ matrix.directory }} triggered by ${{ github.actor }} on event ${{ github.event_name }}" # using the github context 
 
-        - name: runner information 
+        - name: Runner Information 
           run: |
-               echo "Runner OS ${{runner.OS}}"
-               echo "Runner Name  ${{runner.name}}"
-               echo "Runner Arch ${{runner.arch}}"
+               echo "Runner OS: ${{ runner.os }}"
+               echo "Runner Name: ${{ runner.name }}"
+               echo "Runner Arch: ${{ runner.arch }}"
+
         - name: Checkout the Repository
           uses: actions/checkout@v4
 
-        - name: Checking the repository contents
+        - name: Checking the Repository Contents
           run: ls -ltr
 
         - name: Log in to Docker Hub
           run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ env.DOCKERHUB_USERNAME }}" --password-stdin
 
+        - name: Check if Dockerfile Exists
+          id: check_dockerfile
+          run: |
+            if [ -f "./${{ matrix.directory }}/Dockerfile" ]; then
+              echo "Dockerfile exists."
+              echo "exists=true" >> $GITHUB_ENV
+            else
+              echo "Dockerfile is missing in ${{ matrix.directory }}!"
+              echo "exists=false" >> $GITHUB_ENV
+            fi
+
         - name: Build the Docker Image
+          if: env.exists == 'true'
           run: docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ matrix.image_name }}:latest ./${{ matrix.directory }}
 
         - name: Push the Docker Image to Docker Hub
+          if: env.exists == 'true'
           run: docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKERHUB_USERNAME }}/${{ matrix.image_name }}:latest
+
+        - name: Print Failure Message if Dockerfile is Missing
+          if: env.exists == 'false'
+          run: echo "Skipping Docker build and push as Dockerfile is missing!"
