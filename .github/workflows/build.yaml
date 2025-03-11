@@ -32,9 +32,9 @@ jobs:
 
         - name: runner information 
           run: |
-               ehco "Runner OS ${{runner.OS}}"
+               echo "Runner OS ${{runner.OS}}"
                echo "Runner Name  ${{runner.name}}"
-               ehco "Runner Arch ${{runner.arch}}"
+               echo "Runner Arch ${{runner.arch}}"
         - name: Checkout the Repository
           uses: actions/checkout@v4
 
