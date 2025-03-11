@@ -28,12 +28,17 @@ jobs:
 
         steps:
         - name: Welcome
-          run: echo "Starting build for ${{ matrix.directory }}"
+          run: echo "Starting build for ${{ matrix.directory }} triggered by ${{ github.actor }} on event ${{ github.event_name }}" # using the github context 
 
+        - name: runner information 
+          run: |
+               ehco "Runner OS ${{runner.OS}}"
+               echo "Runner Name  ${{runner.name}}"
+               ehco "Runner Arch ${{runner.arch}}"
         - name: Checkout the Repository
           uses: actions/checkout@v4
 
-        - name: List all files
+        - name: Checking the repository contents
           run: ls -ltr
 
         - name: Log in to Docker Hub
