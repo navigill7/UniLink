@@ -6,6 +6,7 @@ import {
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
+import React from 'react';
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useSelector } from "react-redux";

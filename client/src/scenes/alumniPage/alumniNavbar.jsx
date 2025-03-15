@@ -1,4 +1,5 @@
 import "scenes/alumniPage/alumniNavbar.css"
+import React from 'react';
 
 import { useState } from "react";
 import {
