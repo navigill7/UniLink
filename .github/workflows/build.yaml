@@ -1,6 +1,18 @@
 name: Docker_Build_And_Push
 
-on: push
+on: 
+  push:
+    branches: 
+      - main 
+      - "!features/*" # ignore branches starting with word features 
+  pull_request: 
+    types: 
+      - opened
+      - closed # workflow will only run whenever a pr is opened or closed 
+    paths-ignore: 
+      - README.md  # workflow will only run whenever a change in file other than README file 
+    branches: 
+      - main # configure your workflow to only run on pr target a specific branch 
 
 env:
     CONTAINER_REGISTRY: docker.io
@@ -27,6 +39,8 @@ jobs:
         timeout-minutes: 5
 
         steps:
+        - name: event-type 
+          run: echo "this job is triggered with ${{github.event_name }} event "
         - name: Welcome
           run: echo "Starting build for ${{ matrix.directory }} triggered by ${{ github.actor }} on event ${{ github.event_name }}" # using the github context 
 
