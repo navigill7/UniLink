@@ -62,6 +62,12 @@ jobs:
               echo "exists=false" >> $GITHUB_ENV
             fi
 
+        - name: Ensure ECR Repository Exists
+          run: |
+              aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }}/${{ matrix.image_name }} || \
+              aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}/${{ matrix.image_name }}
+          
+
         - name: Build the Docker Image
           if: env.exists == 'true'
           run: |
