@@ -15,6 +15,7 @@ const HomePage = () => {
   const { _id, picturePath } = useSelector((state) => state.user);
   const chatbotContainerRef = useRef(null);
 
+  
   useEffect(() => {
     // Load Botpress script
     const script = document.createElement("script");
