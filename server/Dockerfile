@@ -10,8 +10,7 @@ COPY package.json package-lock.json ./
 # Remove bcrypt and reinstall everything inside the container
 RUN npm cache clean --force \
     && rm -rf node_modules package-lock.json \
-    && npm install \
-    && npm rebuild bcrypt --build-from-source
+    && npm install 
 
 # Copy the rest of the application files
 COPY . .
