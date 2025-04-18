@@ -10,6 +10,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install --frozen-lockfile
 
+
 # Copy all files from the project directory
 COPY . .
 
