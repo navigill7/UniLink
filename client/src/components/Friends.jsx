@@ -25,7 +25,7 @@ const Friend = ({ friendId , name , subtitle , userPicturePath  }) =>{
 
     const patchFrined = async ()=> {
         const response = await fetch(
-            `${process.env.REACT_APP_API_BASE_URL}/users/${_id}/${friendId}`,{
+            `http://unilink-server:3001/users/${_id}/${friendId}`,{
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,

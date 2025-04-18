@@ -32,7 +32,7 @@ const UserWidget = ({ userId, picturePath }) => {
     const [linkedInDetails, setLinkedInDetails] = useState({ url: "", openInput: false });
 
     const getUser = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${userId}`,
+        const response = await fetch(`http://unilink-server:3001/users/${userId}`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` }
