@@ -15,7 +15,7 @@ const ConnectionListWidget = ({ userId }) => {
   const getFriends = async () => {
     setLoading(true);
     const response = await fetch(
-      `http://localhost:3001/users/${userId}/friends`,
+      `${process.env.REACT_APP_API_BASE_URL}/users/${userId}/friends`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
