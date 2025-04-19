@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./client
+    ports:
+      - "3000:80"
+    container_name: unilink-client
+    networks:
+      - unilink
+
+  backend:
+    build: ./server
+    ports:
+      - "3001:3001"
+    container_name: unilink-server
+    networks:
+      - unilink
+    # environment:
+    #   - MONGO_URL=<your-mongo-atlas-uri>
+    #   - NODE_ENV=production
+
+networks:
+  unilink:
+    driver: bridge
