@@ -8,7 +8,7 @@ const UserImage = ({ image , size="60px" })=>{
                 width={size}
                 height={size}
                 alt="user"
-                src={`http://54.147.156.7:3001/assets/${image}`}
+                src={`http://unilink-server:3001/assets/${image}`}
             />
         </Box>
     )

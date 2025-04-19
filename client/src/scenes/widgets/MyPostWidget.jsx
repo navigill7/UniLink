@@ -51,7 +51,7 @@ const MyPostWidget = ({ picturePath }) =>{
 
     }
 
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/posts` ,{
+    const response = await fetch(`http://unilink-server:3001/posts` ,{
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
