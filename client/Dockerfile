@@ -1,20 +1,31 @@
-# Use an official Node.js image
-FROM node:18.19.0
+# Use official Node.js image as the base image
+FROM node:18-alpine AS build
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json first for layer caching
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --frozen-lockfile
 
-# Copy the rest of the app's source code
+
+# Copy all files from the project directory
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Build the React app
+RUN npm run build
 
-# Start the React development server
-CMD ["npm", "start"]
+# Use Nginx as the production server
+FROM nginx:alpine
+
+# Copy the build output to the Nginx public directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80 for the React app
+EXPOSE 80
+
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
