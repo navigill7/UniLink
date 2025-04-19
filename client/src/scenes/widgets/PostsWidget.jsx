@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import React from 'react';
 import { useSelector , useDispatch } from "react-redux";
 import { setPosts } from "state";
 
