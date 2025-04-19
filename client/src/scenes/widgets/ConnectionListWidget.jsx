@@ -15,7 +15,7 @@ const ConnectionListWidget = ({ userId }) => {
   const getFriends = async () => {
     setLoading(true);
     const response = await fetch(
-      `http://unilink-server:3001/users/${userId}/friends`,
+      `http://localhost:3001/users/${userId}/friends`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
