@@ -14,7 +14,7 @@ RUN npm install --frozen-lockfile
 # Copy all files from the project directory
 COPY . .
 
-# Build the React app
+
 RUN npm run build
 
 
