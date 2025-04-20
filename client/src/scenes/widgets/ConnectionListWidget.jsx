@@ -15,7 +15,7 @@ const ConnectionListWidget = ({ userId }) => {
   const getFriends = async () => {
     setLoading(true);
     const response = await fetch(
-      `http://localhost:3001/users/${userId}/friends`,
+      `http://backend-service:3001/users/${userId}/friends`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

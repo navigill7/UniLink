@@ -25,7 +25,7 @@ const Friend = ({ friendId , name , subtitle , userPicturePath  }) =>{
 
     const patchFrined = async ()=> {
         const response = await fetch(
-            `http://localhost:3001/users/${_id}/${friendId}`,{
+            `http://backend-service:3001/users/${_id}/${friendId}`,{
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,

@@ -32,7 +32,7 @@ const UserWidget = ({ userId, picturePath }) => {
     const [linkedInDetails, setLinkedInDetails] = useState({ url: "", openInput: false });
 
     const getUser = async () => {
-        const response = await fetch(`http://localhost:3001/users/${userId}`,
+        const response = await fetch(`http://backend-service:3001/users/${userId}`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` }
