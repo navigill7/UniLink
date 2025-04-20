@@ -12,85 +12,97 @@ on:
       - main
 
 env:
-    AWS_REGION: us-east-1 
-    ECR_REPOSITORY: unilink/artifacts  
-    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-    IMAGE_TAG: ${{ github.sha }}
+  AWS_REGION: us-east-1 
+  ECR_REPOSITORY: unilink/artifacts  
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  IMAGE_TAG: ${{ github.sha }}
 
 concurrency: 
   group: unilink-${{ github.ref }}
   cancel-in-progress: true
 
 jobs: 
-    Detect_Changes:
-        runs-on: ubuntu-latest
-        outputs:
-            client_changed: ${{ steps.filter.outputs.client }}
-            server_changed: ${{ steps.filter.outputs.server }}
-        steps:
-        - name: Checkout the Repository
-          uses: actions/checkout@v4
+  Detect_Changes:
+    runs-on: ubuntu-latest
+    outputs:
+      client_changed: ${{ steps.filter.outputs.client }}
+      server_changed: ${{ steps.filter.outputs.server }}
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@v4
 
-        - name: Check for Changes in Client and Server
-          id: filter
-          uses: dorny/paths-filter@v2
-          with:
-            filters: |
-              client:
-                - 'client/**'
-              server:
-                - 'server/**'
+      - name: Check for Changes in Client and Server
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            client:
+              - 'client/**'
+            server:
+              - 'server/**'
 
-    Build_Push_Client:
-        needs: Detect_Changes
-        if: needs.Detect_Changes.outputs.client_changed == 'true'
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout the Repository
-          uses: actions/checkout@v4
+  Build_Push_Client:
+    needs: Detect_Changes
+    if: needs.Detect_Changes.outputs.client_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@v4
 
-        - name: Log in to AWS ECR
-          run: |
-            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws configure set region ${{ env.AWS_REGION }}
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+      - name: Log in to AWS ECR
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region ${{ env.AWS_REGION }}
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
 
-        - name: Ensure Client ECR Repository Exists
-          run: |
-              aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }}/client_image || \
-              aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}/client_image
+      - name: Ensure Client ECR Repository Exists
+        run: |
+          aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }}/client_image || \
+          aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}/client_image
 
-        - name: Build and Push Client Docker Image
-          run: |
-            IMAGE_URI="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}/client_image"
-            docker build -t $IMAGE_URI:latest -t $IMAGE_URI:${{ env.IMAGE_TAG }} ./client
-            docker push $IMAGE_URI:latest
-            docker push $IMAGE_URI:${{ env.IMAGE_TAG }}
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-    Build_Push_Server:
-        needs: Detect_Changes
-        if: needs.Detect_Changes.outputs.server_changed == 'true'
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout the Repository
-          uses: actions/checkout@v4
+      - name: Build and Push Client Docker Image
+        run: |
+          ECR_IMAGE="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}/client_image"
+          DOCKERHUB_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/client:latest"
+          DOCKERHUB_TAGGED_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/client:${{ env.IMAGE_TAG }}"
 
-        - name: Log in to AWS ECR
-          run: |
-            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws configure set region ${{ env.AWS_REGION }}
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          docker build -t $ECR_IMAGE:latest -t $ECR_IMAGE:${{ env.IMAGE_TAG }} ./client
+          docker tag $ECR_IMAGE:latest $DOCKERHUB_IMAGE
+          docker tag $ECR_IMAGE:${{ env.IMAGE_TAG }} $DOCKERHUB_TAGGED_IMAGE
 
-        - name: Ensure Server ECR Repository Exists
-          run: |
-              aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }}/server_image || \
-              aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}/server_image
+          docker push $ECR_IMAGE:latest
+          docker push $ECR_IMAGE:${{ env.IMAGE_TAG }}
 
-        - name: Build and Push Server Docker Image
-          run: |
-            IMAGE_URI="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}/server_image"
-            docker build -t $IMAGE_URI:latest -t $IMAGE_URI:${{ env.IMAGE_TAG }} ./server
-            docker push $IMAGE_URI:latest
-            docker push $IMAGE_URI:${{ env.IMAGE_TAG }}
+          docker push $DOCKERHUB_IMAGE
+          docker push $DOCKERHUB_TAGGED_IMAGE
+
+  Build_Push_Server:
+    needs: Detect_Changes
+    if: needs.Detect_Changes.outputs.server_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to AWS ECR
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region ${{ env.AWS_REGION }}
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+
+      - name: Ensure Server ECR Repository Exists
+        run: |
+          aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }}/server_image || \
+          aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}/server_image
+
+      - name: Build and Push Server Docker Image
+        run: |
+          IMAGE_URI="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}/server_image"
+          docker build -t $IMAGE_URI:latest -t $IMAGE_URI:${{ env.IMAGE_TAG }} ./server
+          docker push $IMAGE_URI:latest
+          docker push $IMAGE_URI:${{ env.IMAGE_TAG }}
