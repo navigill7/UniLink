@@ -17,7 +17,7 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Use Nginx as the production server
+
 FROM nginx:alpine
 
 # Copy the build output to the Nginx public directory
