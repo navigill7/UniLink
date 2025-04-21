@@ -1,26 +1,35 @@
 # Use official Node.js image as the base image
 FROM node:18-alpine AS build
 
+# Set the working directory inside the container
 WORKDIR /app
 
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install --frozen-lockfile
 
+
+# Copy all files from the project directory
 COPY . .
+
+
 RUN npm run build
 
-# Production Nginx stage
 
-FROM nginx:stable-alpine
+FROM nginx:alpine
 
-RUN mkdir /usr/share/nginx/buffer
+# Copy the build output to the Nginx public directory
+COPY --from=build /app/build /usr/share/nginx/html
 
-COPY --from=build /app/out /usr/share/nginx/html
-COPY --from=build /app/public /usr/share/nginx/html
+# Copy custom nginx config into the container
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-RUN mkdir /usr/share/nginx/log
 
+# Expose port 80 for the React app
 EXPOSE 80
 
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
