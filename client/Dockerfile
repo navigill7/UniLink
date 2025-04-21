@@ -10,13 +10,16 @@ COPY . .
 RUN npm run build
 
 # Production Nginx stage
-FROM nginx:alpine
 
-# Copy the build output to the Nginx public directory
-COPY --from=build /app/build /usr/share/nginx/html
+FROM nginx:stable-alpine
 
-# ✅ Copy custom Nginx config
+RUN mkdir /usr/share/nginx/buffer
+
+COPY --from=builder /app/out /usr/share/nginx/html
+COPY --from=builder /app/public /usr/share/nginx/html
 COPY default.conf /etc/nginx/conf.d/default.conf
+
+RUN mkdir /usr/share/nginx/log
 
 EXPOSE 80
 
