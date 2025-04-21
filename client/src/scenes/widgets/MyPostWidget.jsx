@@ -51,7 +51,7 @@ const MyPostWidget = ({ picturePath }) =>{
 
     }
 
-    const response = await fetch(`http://backend-service:3001/posts` ,{
+    const response = await fetch(`/api/posts` ,{
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

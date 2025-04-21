@@ -18,7 +18,7 @@ const PostsWidget = ({ userId , isProfile = false }) =>{
     }
 
     const getUserPosts = async ()=>{
-        const response = await fetch(`http://backend-service:3001/posts/${userId}/posts`, {
+        const response = await fetch(`/api/posts/${userId}/posts`, {
             method : "GET",
             headers: {Authorization: `Bearer ${token}` }
         });
