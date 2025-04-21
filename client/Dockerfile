@@ -26,6 +26,8 @@ ENV BACKEND_URL=http://backend-service:3001
 # Copy the Nginx configuration template
 COPY default.conf /etc/nginx/conf.d/default.conf
 
+RUN cat /etc/nginx/conf.d/default.conf
+
 # Copy the entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 
