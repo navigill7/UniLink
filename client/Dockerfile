@@ -22,7 +22,7 @@ FROM nginx:alpine
 # Copy the React build output to Nginx's public directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-ENV BACKEND_URL=http://localhost:5500
+ENV BACKEND_URL=http://backend-service:3001
 # Copy the Nginx configuration template
 COPY default.conf /etc/nginx/conf.d/default.conf
 
