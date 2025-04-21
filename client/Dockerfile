@@ -1,7 +1,7 @@
-# Use official Node.js image as the base image
+# Build stage
 FROM node:18-alpine AS build
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json
@@ -10,26 +10,30 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install --frozen-lockfile
 
-
-# Copy all files from the project directory
+# Copy all project files
 COPY . .
 
-
+# Build the React app
 RUN npm run build
 
-
+# Production stage
 FROM nginx:alpine
 
-# Copy the build output to the Nginx public directory
+# Copy the React build output to Nginx's public directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy custom nginx config into the container
+ENV BACKEND_URL=http://localhost:5500
+# Copy the Nginx configuration template
 COPY default.conf /etc/nginx/conf.d/default.conf
 
+# Copy the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
 
-# Expose port 80 for the React app
+# Make the entrypoint script executable
+RUN chmod +x /entrypoint.sh
+
+# Expose port 80
 EXPOSE 80
 
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Use the entrypoint script to generate config and start Nginx
+CMD ["/entrypoint.sh"]
