@@ -5,4 +5,4 @@ Description :  It is an innovative platform aimed at fostering collaboration and
 
 CI/CD pipeline description : 
 
-Code push on main branch --> triger the workflow with github action --> perform code analysis using sonarqube --> build the code --> push artifacts on ECR --> scan the image using trivy --> update the image version in helm chart --> it will trigger the argocd --> deploy the updated image to kops cluser 
+Code push on main branch --> triger the workflow with github action --> perform code analysis using sonarqube --> build the code --> push artifacts on ECR --> scan the image using trivy --> update the image version in helm chart --> it will trigger the argocd --> deploy the updated image to EKS Cluster
